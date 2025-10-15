@@ -3,21 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kingshot Gear Builder</title>
+    <title>Kingshotalytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .animate-spin {
-            animation: spin 1s linear infinite;
         }
         .view {
             transition: opacity 0.3s ease-in-out;
@@ -39,52 +31,123 @@
             background-color: #cbd5e1;
             border-color: #64748b;
         }
-        .gear-slot .slot-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        .gear-slot .slot-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .gear-slot .slot-name { font-size: 0.8rem; font-weight: 500; }
+        .dropdown-menu {
+            display: none;
         }
-        .gear-slot .slot-name {
-            font-size: 0.8rem;
-            font-weight: 500;
+        .dropdown:hover .dropdown-menu {
+            display: block;
         }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <header class="bg-white shadow-md sticky top-0 z-10">
+    <header class="bg-white shadow-md sticky top-0 z-20">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-gray-800">Kingshot Builder</a>
-            <div>
-                <a href="#" id="nav-home" class="text-gray-700 hover:text-blue-500 mx-3">Home</a>
-                <a href="#" id="nav-builder" class="text-gray-700 hover:text-blue-500 mx-3 hidden">Gear Builder</a>
+            <a href="#" id="nav-brand" class="text-2xl font-bold text-gray-800">Kingshotalytics</a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" id="nav-dashboard" class="text-gray-700 hover:text-blue-500 font-medium">Dashboard</a>
+                <a href="#" id="nav-builder" class="text-gray-700 hover:text-blue-500 font-medium hidden">Gear Planner</a>
+                
+                <!-- Tools Dropdown -->
+                <div class="relative dropdown">
+                    <button class="text-gray-700 hover:text-blue-500 font-medium focus:outline-none">Tools <i class="fas fa-chevron-down text-xs"></i></button>
+                    <div class="dropdown-menu absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-30">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Governor Gear Calculator</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Hero Gear XP Calculator</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Daily Checklist</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Truegold Calculator</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Construction Time Calculator</a>
+                    </div>
+                </div>
+                
+                <!-- Information Dropdown -->
+                <div class="relative dropdown">
+                    <button class="text-gray-700 hover:text-blue-500 font-medium focus:outline-none">Information <i class="fas fa-chevron-down text-xs"></i></button>
+                    <div class="dropdown-menu absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-30">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Kingshot Map</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Town Locations</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Character Information</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Exclusive Hero Gear</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">Building Information</a>
+                    </div>
+                </div>
+
+                <!-- Guides Dropdown -->
+                 <div class="relative dropdown">
+                    <button class="text-gray-700 hover:text-blue-500 font-medium focus:outline-none">Guides <i class="fas fa-chevron-down text-xs"></i></button>
+                    <div class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-30">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">All Guides</a>
+                    </div>
+                </div>
+
+                <!-- Tier Lists Dropdown -->
+                 <div class="relative dropdown">
+                    <button class="text-gray-700 hover:text-blue-500 font-medium focus:outline-none">Tier Lists <i class="fas fa-chevron-down text-xs"></i></button>
+                    <div class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-30">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">PvE DPS</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">PvP Offense</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-500 cursor-not-allowed">PvP Defense</a>
+                    </div>
+                </div>
+
+            </div>
+            <div id="nav-auth-status">
+                <!-- Auth buttons will be injected here -->
             </div>
         </nav>
     </header>
 
     <main id="app" class="container mx-auto p-4 mt-6">
         
-        <!-- View for Authentication -->
-        <div id="auth-view" class="view">
-             <div class="w-full max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg">
-                <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">User Authentication</h1>
-                <div id="user-status" class="text-lg text-center text-gray-700 p-4 bg-gray-50 rounded-lg flex items-center justify-center space-x-3">
-                    <svg id="loader" class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Checking auth status...</span>
+        <!-- View for Home/Dashboard -->
+        <div id="home-view" class="view">
+             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column: Patch Notes -->
+                <div class="lg:col-span-2 bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-3xl font-bold mb-6">Latest Patch Notes</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-xl font-semibold">Version 1.2.5 - "The Sunstone Update"</h3>
+                            <p class="text-sm text-gray-500 mb-2">October 14, 2025</p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>Introduced new "Sunstone" crafting material.</li>
+                                <li>Rebalanced hero abilities for Andromeda and Ares.</li>
+                                <li>Fixed a bug related to guild chat notifications.</li>
+                            </ul>
+                        </div>
+                        <div class="border-t pt-6">
+                             <h3 class="text-xl font-semibold">Version 1.2.4 - "Whispering Woods Expansion"</h3>
+                            <p class="text-sm text-gray-500 mb-2">October 1, 2025</p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1">
+                                <li>New world zone "Whispering Woods" is now open.</li>
+                                <li>Increased level cap to 75.</li>
+                                <li>Added 5 new gear sets to the loot table.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div id="user-details" class="text-sm text-gray-500 mt-4 break-words text-center min-h-[40px]"></div>
-                <div id="login-options" class="mt-6 text-center hidden">
-                    <button id="google-signin-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center w-full">
-                        <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42v-0.083H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-2.56-0.198-5.021-0.57-7.439z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.223 0-9.657-3.356-11.303-7.932l-6.573 4.817C9.864 39.931 16.446 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-0.792 2.237-2.231 4.166-4.087 5.574l6.19 5.238C39.986 35.666 44 30.134 44 24c0-2.56-0.198-5.021-0.57-7.439z"/></svg>
-                        Sign in with Google
-                    </button>
-                </div>
-                <div id="sign-out-container" class="mt-6 text-center hidden">
-                    <button id="sign-out-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
-                        Sign Out
-                    </button>
+                <!-- Right Column: Redeem Codes -->
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h2 class="text-3xl font-bold mb-6">Redeem Codes</h2>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <p class="font-mono text-lg font-bold text-green-600">FALLFEST2025</p>
+                            <p class="text-sm text-gray-600">Rewards: 500 Gems, 10x Speedups</p>
+                            <p class="text-xs text-red-500 mt-1">Expires: Oct 31, 2025</p>
+                        </div>
+                         <div class="p-4 bg-gray-50 rounded-lg">
+                            <p class="font-mono text-lg font-bold text-green-600">KSHOTYT100K</p>
+                            <p class="text-sm text-gray-600">Rewards: Exclusive Avatar Frame</p>
+                            <p class="text-xs text-red-500 mt-1">Expires: Nov 15, 2025</p>
+                        </div>
+                         <div class="p-4 bg-gray-50 rounded-lg opacity-50">
+                            <p class="font-mono text-lg font-bold text-gray-500">SUMMER25</p>
+                            <p class="text-sm text-gray-600">Rewards: 200 Gems</p>
+                            <p class="text-xs text-gray-500 mt-1">Expired: Sep 30, 2025</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,7 +155,6 @@
         <!-- View for Gear Builder -->
         <div id="builder-view" class="view hidden">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Left Column: Character & Gear -->
                 <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
                     <h2 class="text-2xl font-bold mb-4">Character Setup</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -107,7 +169,6 @@
                             <input type="text" id="build-name" class="w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., PvP Build">
                         </div>
                     </div>
-
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                         <div class="gear-slot" data-slot="head"><i class="slot-icon fas fa-helmet-battle"></i><span class="slot-name">Head</span></div>
                         <div class="gear-slot" data-slot="chest"><i class="slot-icon fas fa-tshirt"></i><span class="slot-name">Chest</span></div>
@@ -119,26 +180,19 @@
                         <div class="gear-slot" data-slot="ring2"><i class="slot-icon fas fa-ring"></i><span class="slot-name">Ring 2</span></div>
                     </div>
                 </div>
-
-                <!-- Right Column: Stats & Saved Builds -->
                 <div class="space-y-8">
                      <div class="bg-white p-6 rounded-xl shadow-lg">
                         <h2 class="text-2xl font-bold mb-4">Stats</h2>
-                        <div id="stats-display" class="space-y-2">
-                           <p class="text-gray-600">Select gear to see stats.</p>
-                        </div>
+                        <div id="stats-display" class="space-y-2"><p class="text-gray-600">Select gear to see stats.</p></div>
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-lg">
                         <h2 class="text-2xl font-bold mb-4">Manage Builds</h2>
                         <button id="save-build-btn" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Save Current Build</button>
-                        <div id="saved-builds-list" class="mt-4 space-y-2">
-                           <p class="text-gray-500 text-sm">No builds saved yet.</p>
-                        </div>
+                        <div id="saved-builds-list" class="mt-4 space-y-2"><p class="text-gray-500 text-sm">No builds saved yet.</p></div>
                     </div>
                 </div>
             </div>
         </div>
-
     </main>
 
     <script type="module">
@@ -147,26 +201,17 @@
         import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         window.addEventListener('DOMContentLoaded', () => {
-            // --- DOM Elements ---
-            const userStatus = document.getElementById('user-status'),
-                  userDetails = document.getElementById('user-details'),
-                  loader = document.getElementById('loader'),
-                  loginOptions = document.getElementById('login-options'),
-                  googleBtn = document.getElementById('google-signin-btn'),
-                  signOutContainer = document.getElementById('sign-out-container'),
-                  signOutBtn = document.getElementById('sign-out-btn'),
-                  navHome = document.getElementById('nav-home'),
+            const navAuthStatus = document.getElementById('nav-auth-status'),
+                  navDashboard = document.getElementById('nav-dashboard'),
                   navBuilder = document.getElementById('nav-builder'),
-                  authView = document.getElementById('auth-view'),
+                  navBrand = document.getElementById('nav-brand'),
+                  homeView = document.getElementById('home-view'),
                   builderView = document.getElementById('builder-view'),
                   heroSelect = document.getElementById('hero-select'),
                   buildNameInput = document.getElementById('build-name'),
                   saveBuildBtn = document.getElementById('save-build-btn'),
                   savedBuildsList = document.getElementById('saved-builds-list');
 
-            const loggedInIcon = `<svg class="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V6a3 3 0 013-3v0a3 3 0 013 3v3" /></svg>`;
-            const loggedOutIcon = `<svg class="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V6a3 3 0 013-3v0a3 3 0 013 3v3m1-3h-1" /></svg>`;
-            
             const firebaseConfig = {
                 apiKey: "AIzaSyB8vos_zTcted2kqLkSB5zfn1DlBY3h_pA",
                 authDomain: "alliance-stats-2.firebaseapp.com",
@@ -183,7 +228,6 @@
             const appId = typeof __app_id !== 'undefined' ? __app_id : 'kingshot-builder';
             let currentUserId = null;
 
-            // --- Hero Data ---
             const heroes = ["Abyss", "Aches", "Aeon", "Agony", "Alice", "Alucard", "Amai", "Amaterasu", "Amnesty", "Andromeda", "Angel", "Angelica", "Anpu", "Apollo", "Archimedes", "Ares", "Aria", "Arthur", "Artemis", "Asclepius", "Asura", "Athena", "Atlas", "Atropos", "Augustus", "Aurelius", "Aurora", "Autumn"];
             heroes.forEach(hero => {
                 const option = document.createElement('option');
@@ -192,35 +236,45 @@
                 heroSelect.appendChild(option);
             });
 
-            const updateUI = (user) => {
-                loader.classList.add('hidden');
-                currentUserId = user ? user.uid : null;
-                if (user) {
-                    userStatus.innerHTML = `${loggedInIcon} <span class="font-semibold text-green-600">Logged In</span>`;
-                    userDetails.innerHTML = `Welcome back, ${user.displayName || 'User'}!`;
-                    signOutContainer.classList.remove('hidden');
-                    loginOptions.classList.add('hidden');
-                    navBuilder.classList.remove('hidden');
-                    authView.classList.add('hidden');
-                    builderView.classList.remove('hidden');
-                    loadSavedBuilds();
-                } else {
-                    userStatus.innerHTML = `${loggedOutIcon} <span class="font-semibold text-red-600">Logged Out</span>`;
-                    userDetails.textContent = 'Please sign in to access the builder.';
-                    signOutContainer.classList.add('hidden');
-                    loginOptions.classList.remove('hidden');
-                    navBuilder.classList.add('hidden');
-                    builderView.classList.add('hidden');
-                    authView.classList.remove('hidden');
-                }
+            const switchView = (viewToShow) => {
+                [homeView, builderView].forEach(v => v.classList.add('hidden'));
+                if(viewToShow) viewToShow.classList.remove('hidden');
             };
 
+            const updateUI = (user) => {
+                currentUserId = user ? user.uid : null;
+                navAuthStatus.innerHTML = ''; 
+                if (user) {
+                    const welcomeText = document.createElement('span');
+                    welcomeText.className = 'text-gray-700 text-sm mr-4';
+                    welcomeText.textContent = `Welcome, ${user.displayName.split(' ')[0]}!`;
+                    
+                    const signOutBtn = document.createElement('button');
+                    signOutBtn.textContent = 'Sign Out';
+                    signOutBtn.className = 'bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg text-sm';
+                    signOutBtn.onclick = () => signOut(auth);
+
+                    navAuthStatus.append(welcomeText, signOutBtn);
+                    navBuilder.classList.remove('hidden');
+                    loadSavedBuilds();
+                } else {
+                    const googleSignInBtn = document.createElement('button');
+                    googleSignInBtn.innerHTML = `<i class="fab fa-google mr-2"></i> Sign in with Google`;
+                    googleSignInBtn.className = 'bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg flex items-center';
+                    googleSignInBtn.onclick = () => signInWithPopup(auth, new GoogleAuthProvider());
+                    
+                    navAuthStatus.appendChild(googleSignInBtn);
+                    navBuilder.classList.add('hidden');
+                }
+            };
+            
             const loadSavedBuilds = async () => {
                 if (!currentUserId) return;
                 const buildsCollectionRef = collection(db, 'artifacts', appId, 'users', currentUserId, 'gear_builds');
-                savedBuildsList.innerHTML = '';
+                savedBuildsList.innerHTML = '<p class="text-gray-500 text-sm">Loading builds...</p>';
                 try {
                     const querySnapshot = await getDocs(buildsCollectionRef);
+                    savedBuildsList.innerHTML = '';
                     if (querySnapshot.empty) {
                          savedBuildsList.innerHTML = '<p class="text-gray-500 text-sm">No builds saved yet.</p>';
                          return;
@@ -245,39 +299,28 @@
                 }
                 const heroName = heroSelect.value;
                 const buildName = buildNameInput.value.trim();
-
-                if (!heroName || heroName === 'Select a Hero' || !buildName) {
+                if (heroName === 'Select a Hero' || !buildName) {
                     alert('Please select a hero and enter a build name.');
                     return;
                 }
-                
-                // For now, gear is just placeholder text. This would be expanded later.
-                const gear = { head: "Basic Helmet", chest: "Leather Tunic" };
-                const buildId = buildName.toLowerCase().replace(/\s+/g, '-');
+                const gear = { head: null, chest: null, weapon: null, offhand: null, legs: null, feet: null, ring1: null, ring2: null };
+                const buildId = `${heroName}-${buildName}`.toLowerCase().replace(/\s+/g, '-');
                 const docRef = doc(db, 'artifacts', appId, 'users', currentUserId, 'gear_builds', buildId);
-
                 try {
-                    await setDoc(docRef, {
-                        heroName,
-                        buildName,
-                        gear,
-                        savedAt: new Date()
-                    });
+                    await setDoc(docRef, { heroName, buildName, gear, savedAt: new Date() });
                     alert(`Build "${buildName}" saved!`);
-                    loadSavedBuilds(); // Refresh the list
+                    loadSavedBuilds();
                 } catch (error) {
                     console.error("Error saving document: ", error);
                     alert('There was an error saving your build.');
                 }
             });
 
-            navHome.addEventListener('click', (e) => { e.preventDefault(); builderView.classList.add('hidden'); authView.classList.remove('hidden'); });
-            navBuilder.addEventListener('click', (e) => { e.preventDefault(); if(auth.currentUser) { authView.classList.add('hidden'); builderView.classList.remove('hidden'); }});
+            [navDashboard, navBrand].forEach(el => el.addEventListener('click', (e) => { e.preventDefault(); switchView(homeView); }));
+            navBuilder.addEventListener('click', (e) => { e.preventDefault(); if(auth.currentUser) switchView(builderView); else alert("Please sign in to use the Gear Builder."); });
             
             onAuthStateChanged(auth, updateUI);
-
-            googleBtn.addEventListener('click', () => signInWithPopup(auth, new GoogleAuthProvider()).catch(err => console.error("Sign in error:", err)));
-            signOutBtn.addEventListener('click', () => signOut(auth).catch(err => console.error("Sign out error:", err)));
+            switchView(homeView);
         });
     </script>
 </body>
