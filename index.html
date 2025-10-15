@@ -1,156 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kingshotalytics</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a202c; /* Dark background */
-            color: #e2e8f0; /* Light text */
-        }
-        .view {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .gear-slot {
-            background-color: #2d3748; /* Darker slot background */
-            border: 2px dashed #4a5568;
-            color: #a0aec0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            min-height: 100px;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-        }
-        .gear-slot:hover {
-            background-color: #4a5568;
-            border-color: #718096;
-        }
-        .gear-slot .slot-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-        .gear-slot .slot-name { font-size: 0.8rem; font-weight: 500; }
-        .dropdown-menu {
-            display: none;
-            background-color: #2d3748; /* Dark dropdown */
-            border: 1px solid #4a5568;
-        }
-        .dropdown.active .dropdown-menu {
-            display: block;
-        }
-        .card {
-            background-color: #2d3748; /* Dark card background */
-        }
-        .code-card {
-            background-color: #1a202c;
-        }
-        .code-expired {
-            opacity: 0.5;
-            text-decoration: line-through;
-        }
-        .code-expired button {
-            pointer-events: none;
-        }
-        #star-level-selector .fa-star {
-            transition: color 0.2s ease-in-out;
-        }
-        .prose-invert { color: #d1d5db; }
-        .prose-invert h1, .prose-invert h2, .prose-invert h3 { color: #fff; }
-        .prose-invert a { color: #60a5fa; }
-        .prose-invert ul > li::before { background-color: #60a5fa; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingshotalytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+        }
+        .view {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .gear-slot {
+            background-color: #2d3748; /* Darker slot background */
+            border: 2px dashed #4a5568;
+            color: #a0aec0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            min-height: 100px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .gear-slot:hover {
+            background-color: #4a5568;
+            border-color: #718096;
+        }
+        .gear-slot .slot-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .gear-slot .slot-name { font-size: 0.8rem; font-weight: 500; }
+        .dropdown-menu {
+            display: none;
+            background-color: #2d3748; /* Dark dropdown */
+            border: 1px solid #4a5568;
+        }
+        .dropdown.active .dropdown-menu {
+            display: block;
+        }
+        .card {
+            background-color: #2d3748; /* Dark card background */
+        }
+        .code-card {
+            background-color: #1a202c;
+        }
+        .code-expired {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+         .code-expired button {
+            pointer-events: none;
+        }
+        #star-level-selector .fa-star {
+            transition: color 0.2s ease-in-out;
+        }
+        .prose-invert { color: #d1d5db; }
+        .prose-invert h1, .prose-invert h2, .prose-invert h3 { color: #fff; }
+        .prose-invert a { color: #60a5fa; }
+        .prose-invert ul > li::before { background-color: #60a5fa; }
+    </style>
 </head>
 <body class="text-gray-200">
 
-    <header class="bg-[#2d3748] shadow-lg sticky top-0 z-20">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#" id="nav-brand" class="text-2xl font-bold text-white">Kingshotalytics</a>
-            <div class="hidden md:flex items-center space-x-6">
-                <a href="#" id="nav-dashboard" class="text-gray-300 hover:text-blue-400 font-medium">Dashboard</a>
-                <a href="#" id="nav-builder" class="text-gray-300 hover:text-blue-400 font-medium">Gear Planner</a>
-                <a href="#" id="nav-rankings" class="text-gray-300 hover:text-blue-400 font-medium hidden">Player Rankings</a>
+    <header class="bg-[#2d3748] shadow-lg sticky top-0 z-20">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" id="nav-brand" class="text-2xl font-bold text-white">Kingshotalytics</a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" id="nav-dashboard" class="text-gray-300 hover:text-blue-400 font-medium">Dashboard</a>
+                <a href="#" id="nav-builder" class="text-gray-300 hover:text-blue-400 font-medium hidden">Gear Planner</a>
+                <a href="#" id="nav-rankings" class="text-gray-300 hover:text-blue-400 font-medium hidden">Player Rankings</a>
+                
+                <div class="relative dropdown">
+                    <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Tools <i class="fas fa-chevron-down text-xs"></i></button>
+                    <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
+                        <a href="#" id="nav-calendar" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Event Calendar</a>
+                        <a href="#" id="nav-battle-report" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Battle Report Analyzer</a>
+                        <a href="#" id="nav-daily-checklist" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Daily Checklist</a>
+                        <a href="#" id="nav-pack-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Pack Value Calculator</a>
+                        <a href="#" id="nav-construction-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Construction Calculator</a>
+                        <a href="#" id="nav-troop-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Troop Training Calculator</a>
+                        <a href="#" id="nav-healing-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Healing Calculator</a>
+                    </div>
+                </div>
+                
+                <div class="relative dropdown">
+                    <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Guides <i class="fas fa-chevron-down text-xs"></i></button>
+                    <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
+                        <a href="#" id="nav-kingdom-transfer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Kingdom Transfer</a>
+                        <a href="#" id="nav-kingdom-reviews" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Kingdom Reviews</a>
+                    </div>
+                </div>
 
-                <div class="relative dropdown">
-                    <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Tools <i class="fas fa-chevron-down text-xs"></i></button>
-                    <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
-                        <a href="#" id="nav-calendar" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Event Calendar</a>
-                        <a href="#" id="nav-battle-report" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Battle Report Analyzer</a>
-                        <a href="#" id="nav-daily-checklist" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Daily Checklist</a>
-                        <a href="#" id="nav-pack-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Pack Value Calculator</a>
-                        <a href="#" id="nav-construction-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Construction Calculator</a>
-                        <a href="#" id="nav-troop-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Troop Training Calculator</a>
-                        <a href="#" id="nav-healing-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Healing Calculator</a>
-                    </div>
-                </div>
+                <div class="relative dropdown">
+                    <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Information <i class="fas fa-chevron-down text-xs"></i></button>
+                    <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
+                         <a href="#" id="nav-treasure-map" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Treasure Island Map*</a>
+                         <a href="#" id="nav-kingshot-map" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Kingshot Map</a>
+                         <a href="#" id="nav-building-info" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Building Information</a>
+                         <a href="#" id="nav-research-info" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Research Information</a>
+                         <a href="#" id="nav-community-blog" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Community Blog</a>
+                    </div>
+                </div>
 
-                <div class="relative dropdown">
-                    <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Guides <i class="fas fa-chevron-down text-xs"></i></button>
-                    <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
-                        <a href="#" id="nav-kingdom-transfer" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Kingdom Transfer</a>
-                        <a href="#" id="nav-kingdom-reviews" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Kingdom Reviews</a>
-                    </div>
-                </div>
+                 <div class="relative dropdown">
+                    <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Tier Lists <i class="fas fa-chevron-down text-xs"></i></button>
+                     <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 z-30">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-400 cursor-not-allowed">PvE DPS</a>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                 <div class="relative">
+                    <input type="search" id="search-input" class="bg-gray-700 text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32 md:w-48 transition-all" placeholder="Search...">
+                    <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div id="nav-auth-status"></div>
+            </div>
+        </nav>
+    </header>
 
-                <div class="relative dropdown">
-                    <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Information <i class="fas fa-chevron-down text-xs"></i></button>
-                    <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
-                         <a href="#" id="nav-treasure-map" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Treasure Island Map*</a>
-                         <a href="#" id="nav-kingshot-map" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Kingshot Map</a>
-                         <a href="#" id="nav-building-info" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Building Information</a>
-                         <a href="#" id="nav-research-info" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Research Information</a>
-                         <a href="#" id="nav-community-blog" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Community Blog</a>
-                    </div>
-                </div>
+    <main id="app" class="container mx-auto p-4 mt-6">
+        
+        <div id="home-view" class="view">
+             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-8">
+                    <div id="recently-added-card" class="card p-8 rounded-xl shadow-lg">
+                        <h2 class="text-3xl font-bold mb-6 text-white">Recently Added</h2>
+                        <ul id="recently-added-list" class="list-disc list-inside space-y-3">
+                            <li>
+                                <span class="text-gray-300">New Info Section: Treasure Island event map.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-12">[Details v1.12]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">New Info Section: Research tree costs and bonuses.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-11">[Details v1.11]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">New Info Section: Standard Kingdom Map with buffs.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-10">[Details v1.10]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">New Info Section: View full building upgrade charts.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-9">[Details v1.9]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">Construction Calculator can now autofill buffs from the Gear Planner.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-8">[Details v1.8]</a>
+                            </li>
+                             <li>
+                                <span class="text-gray-300">Advanced Construction Calculator with bulk calculations and buff support.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-7">[Details v1.7]</a>
+                            </li>
+                             <li>
+                                <span class="text-gray-300">Navigation Fix: Dropdown menus are now click-to-open for easier use.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-6">[Details v1.6]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">The Calculator Update! New tools for Construction, Troop Training, and Healing.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-5">[Details v1.5]</a>
+                            </li>
+                             <li>
+                                <span class="text-gray-300">New Tools & Blog - Battle Report Analyzer, Daily Checklist, Pack Calculator & Community Blog added.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-4">[Details v1.4]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">New Guide: Kingdom Reviews - Read and write reviews for kingdoms.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-3">[Details v1.3]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">New Tool: Event Calendar - Plan ahead with our new server event calendar.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-2">[Details v1.2]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">Coming Soon: Player Rankings - A new section to rank players is in the works!</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-1">[Details v1.1]</a>
+                            </li>
+                        </ul>
+                        <div class="text-center mt-6">
+                            <button id="expand-features-btn" class="text-blue-400 hover:underline hidden">Show All Updates</button>
+                        </div>
+                    </div>
+                    <div class="card p-8 rounded-xl shadow-lg">
+                        <!-- News & Events Section -->
+                    </div>
+                </div>
+                <div class="card p-8 rounded-xl shadow-lg">
+                    <!-- Redeem Codes Section -->
+                </div>
+            </div>
+        </div>
 
-                 <div class="relative dropdown">
-                    <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Tier Lists <i class="fas fa-chevron-down text-xs"></i></button>
-                     <div class="dropdown-menu absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 z-30">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-400 cursor-not-allowed">PvE DPS</a>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center space-x-4">
-                 <div class="relative">
-                    <input type="search" id="search-input" class="bg-gray-700 text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32 md:w-48 transition-all" placeholder="Search...">
-                    <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                </div>
-                <div id="nav-auth-status"></div>
-            </div>
-        </nav>
-    </header>
+        <div id="builder-view" class="view hidden"></div>
+        <div id="rankings-view" class="view hidden"></div>
+        <div id="calendar-view" class="view hidden"></div>
+        <div id="kingdom-reviews-view" class="view hidden"></div>
+        <div id="kingdom-transfer-view" class="view hidden"></div>
+        <div id="battle-report-analyzer-view" class="view hidden"></div>
+        <div id="daily-checklist-view" class="view hidden"></div>
+        <div id="pack-value-calculator-view" class="view hidden"></div>
+        <div id="community-blog-view" class="view hidden"></div>
 
-    <main id="app" class="container mx-auto p-4 mt-6">
+        <div id="construction-calculator-view" class="view hidden"></div>
+        <div id="troop-training-calculator-view" class="view hidden"></div>
+        <div id="healing-calculator-view" class="view hidden"></div>
 
-        <div id="home-view" class="view">
-             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 space-y-8">
-                    <div id="recently-added-card" class="card p-8 rounded-xl shadow-lg">
-                        <h2 class="text-3xl font-bold mb-6 text-white">Recently Added</h2>
-                        <ul id="recently-added-list" class="list-disc list-inside space-y-3">
-                            <li>
-                                <span class="text-gray-300">New Info Section: Treasure Island event map.</span>
-                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-12">[Details v1.12]</a>
-                            </li>
-                            <li>
-                                <span class="text-gray-300">New Info Section: Research tree costs and bonuses.</span>
-                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-11">[Details v1.11]</a>
-                            </li>
-                            <li>
-                                <span class="text-gray-300">New Info Section: Standard Kingdom Map with buffs.</span>
-                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-10">[Details v1.10]</a>
-                            </li>
-                            <li>
-                                <span class="text-gray-300">New Info Section: View full building upgrade charts.</span>
-                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-9">[Details v1.9]</a>
-                            </li>
-                            <li>
-                                <span class="text-gray-300">Construction Calculator can now autofill buffs from the Gear Planner.</span>
-                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-8">[Details v1.8]</a>
-                            </li>
-                             <li>
-                                <span class="text-gray-300">Advanced Construction Calculator with bulk
+        <div id="building-info-view" class="view hidden"></div>
+        <div id="kingshot-map-view" class="view hidden"></div>
+        <div id="research-info-view" class="view hidden"></div>
+        <div id="treasure-island-map-view" class="view hidden"></div>
 
+
+        <!-- PATCH NOTE VIEWS -->
+        <div id="patch-1-1-view" class="view hidden"></div>
+        <div id="patch-1-2-view" class="view hidden"></div>
+        <div id="patch-1-3-view" class="view hidden"></div>
+        <div id="patch-1-4-view" class="view hidden"></div>
+        <div id="patch-1-5-view" class="view hidden"></div>
+        <div id="patch-1-6-view" class="view hidden"></div>
+        <div id="patch-1-7-view" class="view hidden"></div>
+        <div id="patch-1-8-view" class="view hidden"></div>
+        <div id="patch-1-9-view" class="view hidden"></div>
+        <div id="patch-1-10-view" class="view hidden"></div>
+        <div id="patch-1-11-view" class="view hidden"></div>
+        <div id="patch-1-12-view" class="view hidden"></div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const elements = {
+                navAuthStatus: document.getElementById('nav-auth-status'),
+                navDashboard: document.getElementById('nav-dashboard'),
+                navBuilder: document.getElementById('nav-builder'),
+                navRankings: document.getElementById('nav-rankings'),
+                navCalendar: document.getElementById('nav-calendar'),
+                navBattleReport: document.getElementById('nav-battle-report'),
+                navDailyChecklist: document.getElementById('nav-daily-checklist'),
+                navPackCalculator: document.getElementById('nav-pack-calculator'),
+                navConstructionCalculator: document.getElementById('nav-construction-calculator'),
+                navTroopCalculator: document.getElementById('nav-troop-calculator'),
+                navHealingCalculator: document.getElementById('nav-healing-calculator'),
+                navKingdomTransfer: document.getElementById('nav-kingdom-transfer'),
+                navKingdomReviews: document.getElementById('nav-kingdom-reviews'),
+                navTreasureMap: document.getElementById('nav-treasure-map'),
+                navKingshotMap: document.getElementById('nav-kingshot-map'),
+                navBuildingInfo: document.getElementById('nav-building-info'),
+                navResearchInfo: document.getElementById('nav-research-info'),
+                navCommunityBlog: document.getElementById('nav-community-blog'),
+                navBrand: document.getElementById('nav-brand'),
+                homeView: document.getElementById('home-view'),
+                builderView: document.getElementById('builder-view'),
+                rankingsView: document.getElementById('rankings-view'),
+                calendarView: document.getElementById('calendar-view'),
+                kingdomReviewsView: document.getElementById('kingdom-reviews-view'),
+                kingdomTransferView: document.getElementById('kingdom-transfer-view'),
+                battleReportAnalyzerView: document.getElementById('battle-report-analyzer-view'),
+                dailyChecklistView: document.getElementById('daily-checklist-view'),
+                packValueCalculatorView: document.getElementById('pack-value-calculator-view'),
+                constructionCalculatorView: document.getElementById('construction-calculator-view'),
+                troopTrainingCalculatorView: document.getElementById('troop-training-calculator-view'),
+                healingCalculatorView: document.getElementById('healing-calculator-view'),
+                buildingInfoView: document.getElementById('building-info-view'),
+                kingshotMapView: document.getElementById('kingshot-map-view'),
+                researchInfoView: document.getElementById('research-info-view'),
+                treasureIslandMapView: document.getElementById('treasure-island-map-view'),
+                communityBlogView: document.getElementById('community-blog-view'),
+                patch1_1_View: document.getElementById('patch-1-1-view'),
+                patch1_2_View: document.getElementById('patch-1-2-view'),
+                patch1_3_View: document.getElementById('patch-1-3-view'),
+                patch1_4_View: document.getElementById('patch-1-4-view'),
+                patch1_5_View: document.getElementById('patch-1-5-view'),
+                patch1_6_View: document.getElementById('patch-1-6-view'),
+                patch1_7_View: document.getElementById('patch-1-7-view'),
+                patch1_8_View: document.getElementById('patch-1-8-view'),
+                patch1_9_View: document.getElementById('patch-1-9-view'),
+                patch1_10_View: document.getElementById('patch-1-10-view'),
+                patch1_11_View: document.getElementById('patch-1-11-view'),
+                patch1_12_View: document.getElementById('patch-1-12-view'),
+                recentlyAddedCard: document.getElementById('recently-added-card'),
+                recentlyAddedList: document.getElementById('recently-added-list'),
+                expandFeaturesBtn: document.getElementById('expand-features-btn'),
+            };
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyB8vos_zTcted2kqLkSB5zfn1DlBY3h_pA",
+                authDomain: "alliance-stats-2.firebaseapp.com",
+                projectId: "alliance-stats-2",
+                storageBucket: "alliance-stats-2.appspot.com",
+                messagingSenderId: "617989983517",
+                appId: "1:617989983517:web:ba23e62f9818c0b6d8e5f4",
+                measurementId: "G-TYW4Q3QDMJ"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            const allViews = Object.values(elements).filter(el => el && el.classList.contains('view'));
+
+            const switchView = (viewToShow) => {
+                allViews.forEach(v => { if(v) v.classList.add('hidden'); });
+                if(viewToShow) viewToShow.classList.remove('hidden');
+            };
+
+            // --- Dropdown Menu Logic ---
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button');
+                if (button) {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const isActive = dropdown.classList.contains('active');
+                        dropdowns.forEach(d => d.classList.remove('active'));
+                        if (!isActive) {
+                            dropdown.classList.add('active');
+                        }
+                    });
+                }
+            });
+
+            window.addEventListener('click', () => {
+                dropdowns.forEach(d => d.classList.remove('active'));
+            });
+
+            document.querySelectorAll('a[id^="nav-"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                     e.preventDefault();
+                    dropdowns.forEach(d => d.classList.remove('active'));
+                    const targetViewId = e.currentTarget.id.replace('nav-', '') + '-view';
+                    // special case for brand/dashboard
+                    if (e.currentTarget.id === 'nav-brand' || e.currentTarget.id === 'nav-dashboard') {
+                         switchView(elements.homeView);
+                    } else {
+                        const targetView = document.getElementById(targetViewId);
+                        if(targetView) {
+                            switchView(targetView);
+                        }
+                    }
+                });
+            });
+
+            elements.recentlyAddedCard.addEventListener('click', (e) => {
+                if (e.target.classList.contains('patch-link')) {
+                    e.preventDefault();
+                    const patch = e.target.dataset.patch.replace('-', '_');
+                    const viewId = `patch-${patch}-view`.replace('.','_');
+                    const targetView = elements[viewId];
+                    if(targetView) switchView(targetView);
+                }
+            });
+
+            document.querySelectorAll('.back-to-dashboard-btn').forEach(button => {
+                button.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    switchView(elements.homeView); 
+                });
+            });
+            
+            // "Recently Added" Feature Logic
+            const manageRecentFeatures = () => {
+                 const listItems = elements.recentlyAddedList.children;
+                const maxItems = 5;
+
+                if (listItems.length > maxItems) {
+                    elements.expandFeaturesBtn.classList.remove('hidden');
+                    for (let i = maxItems; i < listItems.length; i++) {
+                        listItems[i].classList.add('hidden');
+                    }
+                }
+
+                elements.expandFeaturesBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    for (let i = 0; i < listItems.length; i++) {
+                        listItems[i].classList.remove('hidden');
+                    }
+                    elements.expandFeaturesBtn.classList.add('hidden');
+                });
+            };
+            
+            const updateAuthUI = (user) => {
+                 elements.navAuthStatus.innerHTML = '';
+                 if (user) {
+                    elements.navAuthStatus.innerHTML = `
+                        <span class="text-gray-300 text-sm mr-2">Welcome, ${user.displayName.split(' ')[0]}!</span>
+                        <button id="sign-out-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-lg text-sm">Sign Out</button>
+                    `;
+                    document.getElementById('sign-out-btn').onclick = () => signOut(auth);
+                    elements.navBuilder.classList.remove('hidden');
+                    elements.navRankings.classList.remove('hidden');
+                } else {
+                    elements.navAuthStatus.innerHTML = `
+                        <button id="sign-in-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg flex items-center text-sm"><i class="fab fa-google mr-2"></i> Sign in</button>
+                    `;
+                    document.getElementById('sign-in-btn').onclick = () => signInWithPopup(auth, new GoogleAuthProvider());
+                    elements.navBuilder.classList.add('hidden');
+                    elements.navRankings.classList.add('hidden');
+                }
+            }
+
+            onAuthStateChanged(auth, updateAuthUI);
+
+            // Initial Load
+            switchView(elements.homeView);
+            manageRecentFeatures();
+        });
+    </script>
+</body>
+</html>
