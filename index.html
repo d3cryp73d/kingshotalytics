@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Auth Status</title>
+    <title>Kingshot Gear Builder</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
         }
-        /* Simple animation for the loading spinner */
         @keyframes spin {
             to {
                 transform: rotate(360deg);
@@ -18,133 +19,265 @@
         .animate-spin {
             animation: spin 1s linear infinite;
         }
+        .view {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .gear-slot {
+            background-color: #e2e8f0;
+            border: 2px dashed #94a3b8;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            min-height: 100px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .gear-slot:hover {
+            background-color: #cbd5e1;
+            border-color: #64748b;
+        }
+        .gear-slot .slot-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .gear-slot .slot-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="text-gray-800">
 
-    <div id="app" class="min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg transition-all">
-            <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">User Authentication</h1>
-            
-            <!-- Status Display -->
-            <div id="user-status" class="text-lg text-center text-gray-700 p-4 bg-gray-50 rounded-lg flex items-center justify-center space-x-3">
-                <!-- Loading Spinner (initially visible) -->
-                <svg id="loader" class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span id="status-text">Checking auth status...</span>
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-800">Kingshot Builder</a>
+            <div>
+                <a href="#" id="nav-home" class="text-gray-700 hover:text-blue-500 mx-3">Home</a>
+                <a href="#" id="nav-builder" class="text-gray-700 hover:text-blue-500 mx-3 hidden">Gear Builder</a>
             </div>
+        </nav>
+    </header>
 
-            <!-- User ID Display -->
-            <div id="user-id" class="text-sm text-gray-500 mt-4 break-words text-center min-h-[40px]"></div>
-
-            <!-- Login Options (initially hidden) -->
-            <div id="login-options" class="mt-6 text-center hidden">
-                <button id="google-signin-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center w-full">
-                    <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42v-0.083H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-2.56-0.198-5.021-0.57-7.439z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.223 0-9.657-3.356-11.303-7.932l-6.573 4.817C9.864 39.931 16.446 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-0.792 2.237-2.231 4.166-4.087 5.574l6.19 5.238C39.986 35.666 44 30.134 44 24c0-2.56-0.198-5.021-0.57-7.439z"/></svg>
-                    Sign in with Google
-                </button>
-            </div>
-
-            <!-- Sign Out Button Container (initially hidden) -->
-            <div id="sign-out-container" class="mt-6 text-center hidden">
-                <button id="sign-out-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                    Sign Out
-                </button>
+    <main id="app" class="container mx-auto p-4 mt-6">
+        
+        <!-- View for Authentication -->
+        <div id="auth-view" class="view">
+             <div class="w-full max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg">
+                <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">User Authentication</h1>
+                <div id="user-status" class="text-lg text-center text-gray-700 p-4 bg-gray-50 rounded-lg flex items-center justify-center space-x-3">
+                    <svg id="loader" class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Checking auth status...</span>
+                </div>
+                <div id="user-details" class="text-sm text-gray-500 mt-4 break-words text-center min-h-[40px]"></div>
+                <div id="login-options" class="mt-6 text-center hidden">
+                    <button id="google-signin-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center w-full">
+                        <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42v-0.083H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-2.56-0.198-5.021-0.57-7.439z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.223 0-9.657-3.356-11.303-7.932l-6.573 4.817C9.864 39.931 16.446 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-0.792 2.237-2.231 4.166-4.087 5.574l6.19 5.238C39.986 35.666 44 30.134 44 24c0-2.56-0.198-5.021-0.57-7.439z"/></svg>
+                        Sign in with Google
+                    </button>
+                </div>
+                <div id="sign-out-container" class="mt-6 text-center hidden">
+                    <button id="sign-out-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                        Sign Out
+                    </button>
+                </div>
             </div>
         </div>
 
-        <footer class="text-center mt-8 text-gray-500 text-sm">
-            <p>This version implements Google Sign-In for user authentication.</p>
-        </footer>
-    </div>
+        <!-- View for Gear Builder -->
+        <div id="builder-view" class="view hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column: Character & Gear -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4">Character Setup</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="hero-select" class="block text-sm font-medium text-gray-700 mb-1">Hero</label>
+                            <select id="hero-select" class="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                                <option>Select a Hero</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="build-name" class="block text-sm font-medium text-gray-700 mb-1">Build Name</label>
+                            <input type="text" id="build-name" class="w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., PvP Build">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                        <div class="gear-slot" data-slot="head"><i class="slot-icon fas fa-helmet-battle"></i><span class="slot-name">Head</span></div>
+                        <div class="gear-slot" data-slot="chest"><i class="slot-icon fas fa-tshirt"></i><span class="slot-name">Chest</span></div>
+                        <div class="gear-slot" data-slot="weapon"><i class="slot-icon fas fa-sword"></i><span class="slot-name">Weapon</span></div>
+                        <div class="gear-slot" data-slot="offhand"><i class="slot-icon fas fa-shield-alt"></i><span class="slot-name">Off-hand</span></div>
+                        <div class="gear-slot" data-slot="legs"><i class="slot-icon fas fa-socks"></i><span class="slot-name">Legs</span></div>
+                        <div class="gear-slot" data-slot="feet"><i class="slot-icon fas fa-shoe-prints"></i><span class="slot-name">Feet</span></div>
+                        <div class="gear-slot" data-slot="ring1"><i class="slot-icon fas fa-ring"></i><span class="slot-name">Ring 1</span></div>
+                        <div class="gear-slot" data-slot="ring2"><i class="slot-icon fas fa-ring"></i><span class="slot-name">Ring 2</span></div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Stats & Saved Builds -->
+                <div class="space-y-8">
+                     <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h2 class="text-2xl font-bold mb-4">Stats</h2>
+                        <div id="stats-display" class="space-y-2">
+                           <p class="text-gray-600">Select gear to see stats.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h2 class="text-2xl font-bold mb-4">Manage Builds</h2>
+                        <button id="save-build-btn" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Save Current Build</button>
+                        <div id="saved-builds-list" class="mt-4 space-y-2">
+                           <p class="text-gray-500 text-sm">No builds saved yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
     <script type="module">
-        // --- Firebase Imports ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            // --- DOM Element References ---
-            const userStatusContainer = document.getElementById('user-status');
-            const userIdElement = document.getElementById('user-id');
-            const loader = document.getElementById('loader');
-            const loginOptionsContainer = document.getElementById('login-options');
-            const googleSignInBtn = document.getElementById('google-signin-btn');
-            const signOutContainer = document.getElementById('sign-out-container');
-            const signOutBtn = document.getElementById('sign-out-btn');
-            
-            // --- Icon SVGs ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const userStatus = document.getElementById('user-status'),
+                  userDetails = document.getElementById('user-details'),
+                  loader = document.getElementById('loader'),
+                  loginOptions = document.getElementById('login-options'),
+                  googleBtn = document.getElementById('google-signin-btn'),
+                  signOutContainer = document.getElementById('sign-out-container'),
+                  signOutBtn = document.getElementById('sign-out-btn'),
+                  navHome = document.getElementById('nav-home'),
+                  navBuilder = document.getElementById('nav-builder'),
+                  authView = document.getElementById('auth-view'),
+                  builderView = document.getElementById('builder-view'),
+                  heroSelect = document.getElementById('hero-select'),
+                  buildNameInput = document.getElementById('build-name'),
+                  saveBuildBtn = document.getElementById('save-build-btn'),
+                  savedBuildsList = document.getElementById('saved-builds-list');
+
             const loggedInIcon = `<svg class="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V6a3 3 0 013-3v0a3 3 0 013 3v3" /></svg>`;
-            const loggedOutIcon = `<svg class="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V6a3 3 0 013-3v0a3 3 S0 013 3v3m1-3h-1" /></svg>`;
+            const loggedOutIcon = `<svg class="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V6a3 3 0 013-3v0a3 3 0 013 3v3m1-3h-1" /></svg>`;
             
-            try {
-                // --- Firebase Configuration & Initialization ---
-                const firebaseConfig = typeof __firebase_config !== 'undefined' 
-                    ? JSON.parse(__firebase_config) 
-                    : {
-                        apiKey: "AIzaSyB8vos_zTcted2kqLkSB5zfn1DlBY3h_pA",
-                        authDomain: "alliance-stats-2.firebaseapp.com",
-                        projectId: "alliance-stats-2",
-                        storageBucket: "alliance-stats-2.appspot.com",
-                        messagingSenderId: "617989983517",
-                        appId: "1:617989983517:web:ba23e62f9818c0b6d8e5f4",
-                        measurementId: "G-TYW4Q3QDMJ"
-                      };
-                
-                const app = initializeApp(firebaseConfig);
-                const auth = getAuth(app);
-                const db = getFirestore(app);
+            const firebaseConfig = {
+                apiKey: "AIzaSyB8vos_zTcted2kqLkSB5zfn1DlBY3h_pA",
+                authDomain: "alliance-stats-2.firebaseapp.com",
+                projectId: "alliance-stats-2",
+                storageBucket: "alliance-stats-2.appspot.com",
+                messagingSenderId: "617989983517",
+                appId: "1:617989983517:web:ba23e62f9818c0b6d8e5f4",
+                measurementId: "G-TYW4Q3QDMJ"
+            };
 
-                // --- UI Update Function ---
-                const updateUI = (user) => {
-                    loader.classList.add('hidden');
-                    if (user) {
-                        userStatusContainer.innerHTML = `${loggedInIcon} <span class="font-semibold text-green-600">Logged In</span>`;
-                        const displayName = user.displayName ? ` (${user.displayName})` : '';
-                        userIdElement.innerHTML = `Welcome back${displayName}!<br/><span class="text-xs text-gray-400">UID: ${user.uid}</span>`;
-                        signOutContainer.classList.remove('hidden');
-                        loginOptionsContainer.classList.add('hidden');
-                    } else {
-                        userStatusContainer.innerHTML = `${loggedOutIcon} <span class="font-semibold text-red-600">Logged Out</span>`;
-                        userIdElement.textContent = 'Please sign in to continue.';
-                        signOutContainer.classList.add('hidden');
-                        loginOptionsContainer.classList.remove('hidden');
-                    }
-                };
-                
-                // --- Event Listeners ---
-                onAuthStateChanged(auth, updateUI);
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'kingshot-builder';
+            let currentUserId = null;
 
-                googleSignInBtn.addEventListener('click', async () => {
-                    const provider = new GoogleAuthProvider();
-                    try {
-                        const result = await signInWithPopup(auth, provider);
-                        console.log("Successfully signed in with Google:", result.user.displayName);
-                    } catch (error) {
-                        console.error("Error signing in with Google:", error);
-                        userIdElement.textContent = `Google sign-in error: ${error.message}`;
-                    }
-                });
+            // --- Hero Data ---
+            const heroes = ["Abyss", "Aches", "Aeon", "Agony", "Alice", "Alucard", "Amai", "Amaterasu", "Amnesty", "Andromeda", "Angel", "Angelica", "Anpu", "Apollo", "Archimedes", "Ares", "Aria", "Arthur", "Artemis", "Asclepius", "Asura", "Athena", "Atlas", "Atropos", "Augustus", "Aurelius", "Aurora", "Autumn"];
+            heroes.forEach(hero => {
+                const option = document.createElement('option');
+                option.value = hero;
+                option.textContent = hero;
+                heroSelect.appendChild(option);
+            });
 
-                signOutBtn.addEventListener('click', async () => {
-                    try {
-                        await signOut(auth);
-                        console.log("User signed out successfully.");
-                    } catch (error) {
-                        console.error("Error signing out:", error);
-                        userIdElement.textContent = `Error signing out: ${error.message}`;
-                    }
-                });
-
-            } catch (error) {
-                console.error("An error occurred during Firebase initialization:", error);
+            const updateUI = (user) => {
                 loader.classList.add('hidden');
-                userStatusContainer.innerHTML = `<span class="font-semibold text-red-600">Initialization Error</span>`;
-                userIdElement.textContent = `Details: ${error.message}`;
-            }
+                currentUserId = user ? user.uid : null;
+                if (user) {
+                    userStatus.innerHTML = `${loggedInIcon} <span class="font-semibold text-green-600">Logged In</span>`;
+                    userDetails.innerHTML = `Welcome back, ${user.displayName || 'User'}!`;
+                    signOutContainer.classList.remove('hidden');
+                    loginOptions.classList.add('hidden');
+                    navBuilder.classList.remove('hidden');
+                    authView.classList.add('hidden');
+                    builderView.classList.remove('hidden');
+                    loadSavedBuilds();
+                } else {
+                    userStatus.innerHTML = `${loggedOutIcon} <span class="font-semibold text-red-600">Logged Out</span>`;
+                    userDetails.textContent = 'Please sign in to access the builder.';
+                    signOutContainer.classList.add('hidden');
+                    loginOptions.classList.remove('hidden');
+                    navBuilder.classList.add('hidden');
+                    builderView.classList.add('hidden');
+                    authView.classList.remove('hidden');
+                }
+            };
+
+            const loadSavedBuilds = async () => {
+                if (!currentUserId) return;
+                const buildsCollectionRef = collection(db, 'artifacts', appId, 'users', currentUserId, 'gear_builds');
+                savedBuildsList.innerHTML = '';
+                try {
+                    const querySnapshot = await getDocs(buildsCollectionRef);
+                    if (querySnapshot.empty) {
+                         savedBuildsList.innerHTML = '<p class="text-gray-500 text-sm">No builds saved yet.</p>';
+                         return;
+                    }
+                    querySnapshot.forEach((doc) => {
+                        const build = doc.data();
+                        const buildElement = document.createElement('div');
+                        buildElement.className = 'p-2 bg-gray-100 rounded text-sm';
+                        buildElement.textContent = `${build.buildName} (${build.heroName})`;
+                        savedBuildsList.appendChild(buildElement);
+                    });
+                } catch (error) {
+                    console.error("Error loading builds:", error);
+                    savedBuildsList.innerHTML = '<p class="text-red-500 text-sm">Could not load builds.</p>';
+                }
+            };
+            
+            saveBuildBtn.addEventListener('click', async () => {
+                if (!currentUserId) {
+                    alert('You must be logged in to save a build.');
+                    return;
+                }
+                const heroName = heroSelect.value;
+                const buildName = buildNameInput.value.trim();
+
+                if (!heroName || heroName === 'Select a Hero' || !buildName) {
+                    alert('Please select a hero and enter a build name.');
+                    return;
+                }
+                
+                // For now, gear is just placeholder text. This would be expanded later.
+                const gear = { head: "Basic Helmet", chest: "Leather Tunic" };
+                const buildId = buildName.toLowerCase().replace(/\s+/g, '-');
+                const docRef = doc(db, 'artifacts', appId, 'users', currentUserId, 'gear_builds', buildId);
+
+                try {
+                    await setDoc(docRef, {
+                        heroName,
+                        buildName,
+                        gear,
+                        savedAt: new Date()
+                    });
+                    alert(`Build "${buildName}" saved!`);
+                    loadSavedBuilds(); // Refresh the list
+                } catch (error) {
+                    console.error("Error saving document: ", error);
+                    alert('There was an error saving your build.');
+                }
+            });
+
+            navHome.addEventListener('click', (e) => { e.preventDefault(); builderView.classList.add('hidden'); authView.classList.remove('hidden'); });
+            navBuilder.addEventListener('click', (e) => { e.preventDefault(); if(auth.currentUser) { authView.classList.add('hidden'); builderView.classList.remove('hidden'); }});
+            
+            onAuthStateChanged(auth, updateUI);
+
+            googleBtn.addEventListener('click', () => signInWithPopup(auth, new GoogleAuthProvider()).catch(err => console.error("Sign in error:", err)));
+            signOutBtn.addEventListener('click', () => signOut(auth).catch(err => console.error("Sign out error:", err)));
         });
     </script>
 </body>
