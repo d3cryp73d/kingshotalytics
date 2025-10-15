@@ -15,6 +15,7 @@
         .view {
             transition: opacity 0.3s ease-in-out;
         }
+        /* Styling for the Gear Planner slots */
         .gear-slot {
             background-color: #2d3748; /* Darker slot background */
             border: 2px dashed #4a5568;
@@ -27,6 +28,7 @@
             border-radius: 0.5rem;
             cursor: pointer;
             transition: background-color 0.2s, border-color 0.2s;
+            position: relative;
         }
         .gear-slot:hover {
             background-color: #4a5568;
@@ -48,11 +50,12 @@
         .code-card {
             background-color: #1a202c;
         }
+        /* Utility classes from previous build */
         .code-expired {
             opacity: 0.5;
             text-decoration: line-through;
         }
-         .code-expired button {
+        .code-expired button {
             pointer-events: none;
         }
         #star-level-selector .fa-star {
@@ -73,7 +76,7 @@
                 <a href="#" id="nav-dashboard" class="text-gray-300 hover:text-blue-400 font-medium">Dashboard</a>
                 <a href="#" id="nav-builder" class="text-gray-300 hover:text-blue-400 font-medium hidden">Gear Planner</a>
                 <a href="#" id="nav-rankings" class="text-gray-300 hover:text-blue-400 font-medium hidden">Player Rankings</a>
-                
+
                 <div class="relative dropdown">
                     <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Tools <i class="fas fa-chevron-down text-xs"></i></button>
                     <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
@@ -86,7 +89,7 @@
                         <a href="#" id="nav-healing-calculator" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Healing Calculator</a>
                     </div>
                 </div>
-                
+
                 <div class="relative dropdown">
                     <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Guides <i class="fas fa-chevron-down text-xs"></i></button>
                     <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
@@ -124,7 +127,7 @@
     </header>
 
     <main id="app" class="container mx-auto p-4 mt-6">
-        
+
         <div id="home-view" class="view">
              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2 space-y-8">
@@ -186,16 +189,120 @@
                     </div>
                     <div class="card p-8 rounded-xl shadow-lg">
                         <!-- News & Events Section -->
+                        <h2 class="text-3xl font-bold mb-6 text-white">Game News & Events</h2>
+                        <p class="text-gray-400">Latest news will appear here once the Information and Blog features are fully integrated. Check the "Event Calendar" for the current rotation!</p>
                     </div>
                 </div>
                 <div class="card p-8 rounded-xl shadow-lg">
                     <!-- Redeem Codes Section -->
+                    <h2 class="text-3xl font-bold mb-6 text-white">Redeem Codes</h2>
+                    <div id="redeem-codes-list" class="space-y-4">
+                        <div class="code-card p-4 rounded-lg flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-white">KINGSHOT2024</p>
+                                <p class="text-sm text-gray-400">Expires: 2024-12-31</p>
+                            </div>
+                            <button class="copy-code-btn bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded-md text-sm">Copy</button>
+                        </div>
+                        <div class="code-card p-4 rounded-lg flex justify-between items-center code-expired">
+                            <div>
+                                <p class="font-bold text-white">WELCOMEREWARD</p>
+                                <p class="text-sm text-gray-400">Expired: 2023-01-01</p>
+                            </div>
+                            <button class="copy-code-btn bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded-md text-sm">Copy</button>
+                        </div>
+                        <!-- More codes will be loaded here -->
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Other main views (Builder, Rankings, etc.) -->
-        <div id="builder-view" class="view hidden"></div>
+        <!-- GEAR PLANNER VIEW -->
+        <div id="builder-view" class="view hidden">
+            <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                <h1 class="text-3xl font-bold text-white">Gear Planner</h1>
+                <div class="flex flex-col md:flex-row gap-2">
+                    <input type="text" id="loadout-name" placeholder="Enter Loadout Name" class="bg-gray-700 text-white rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="save-loadout-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Save Loadout</button>
+                    <!-- Future: Load loadout button here -->
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Side: Gear Slots -->
+                <div class="lg:col-span-2 grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <!-- Slots are arranged in the order specified in the Gear Data Structure -->
+                    <div class="gear-slot" data-slot="helm">
+                        <i class="fas fa-hard-hat slot-icon"></i>
+                        <span class="slot-name">Helm</span>
+                    </div>
+                    <div class="gear-slot" data-slot="greaves">
+                        <i class="fas fa-shoe-prints slot-icon -rotate-90"></i>
+                        <span class="slot-name">Greaves (Infantry)</span>
+                    </div>
+                     <div class="gear-slot" data-slot="gloves">
+                        <i class="fas fa-hand-paper slot-icon"></i>
+                        <span class="slot-name">Gloves (Infantry)</span>
+                    </div>
+                    <div class="gear-slot" data-slot="shroud">
+                        <i class="fas fa-user-secret slot-icon"></i>
+                        <span class="slot-name">Shroud (Infantry)</span>
+                    </div>
+                    <div class="gear-slot" data-slot="armet">
+                        <i class="fas fa-helmet-safety slot-icon"></i>
+                        <span class="slot-name">Armet (Lancer)</span>
+                    </div>
+                    <div class="gear-slot" data-slot="boots">
+                        <i class="fas fa-shoe-prints slot-icon"></i>
+                        <span class="slot-name">Boots (Lancer)</span>
+                    </div>
+                    <div class="gear-slot" data-slot="gauntlet">
+                         <i class="fas fa-hand-sparkles slot-icon"></i>
+                        <span class="slot-name">Gauntlet (Lancer)</span>
+                    </div>
+                    <div class="gear-slot" data-slot="breastplate">
+                        <i class="fas fa-shield-halved slot-icon"></i>
+                        <span class="slot-name">Breastplate (Lancer)</span>
+                    </div>
+                    <div class="gear-slot" data-slot="faceplate">
+                        <i class="fas fa-mask slot-icon"></i>
+                        <span class="slot-name">Faceplate (Marksman)</span>
+                    </div>
+                    <div class="gear-slot" data-slot="riders">
+                         <i class="fas fa-person-military-rifle slot-icon"></i>
+                        <span class="slot-name">Riders (Marksman)</span>
+                    </div>
+                    <div class="gear-slot" data-slot="bracers">
+                        <i class="fas fa-hand-fist slot-icon"></i>
+                        <span class="slot-name">Bracers (Marksman)</span>
+                    </div>
+                     <div class="gear-slot" data-slot="leatherwear">
+                        <i class="fas fa-vest-patches slot-icon"></i>
+                        <span class="slot-name">Leatherwear (Marksman)</span>
+                    </div>
+                </div>
+
+                <!-- Right Side: Total Stats -->
+                <div class="card p-6 rounded-xl shadow-lg h-fit">
+                    <h2 class="text-2xl font-bold mb-4 text-white border-b border-gray-600 pb-2">Total Stats</h2>
+                    <div id="total-stats-container" class="space-y-2 text-lg">
+                        <!-- Stats will be dynamically updated by JavaScript -->
+                        <div class="flex justify-between"><span>Power:</span> <span id="total-power">0</span></div>
+                        <div class="flex justify-between"><span>Attack:</span> <span id="total-attack">0%</span></div>
+                        <div class="flex justify-between"><span>Defense:</span> <span id="total-defense">0%</span></div>
+                        <div class="flex justify-between"><span>Health:</span> <span id="total-health">0%</span></div>
+                        <div class="flex justify-between"><span>Lethality:</span> <span id="total-lethality">0%</span></div>
+                        <hr class="border-gray-600 my-2">
+                        <div class="flex justify-between"><span>Infantry Health:</span> <span id="total-inf-health">0%</span></div>
+                        <div class="flex justify-between"><span>Lancer Health:</span> <span id="total-lanc-health">0%</span></div>
+                        <div class="flex justify-between"><span>Marksman Health:</span> <span id="total-mark-health">0%</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END GEAR PLANNER VIEW -->
+
+
         <div id="rankings-view" class="view hidden"></div>
         <div id="calendar-view" class="view hidden"></div>
         <div id="kingdom-reviews-view" class="view hidden"></div>
@@ -205,41 +312,17 @@
         <div id="pack-value-calculator-view" class="view hidden"></div>
         <div id="community-blog-view" class="view hidden"></div>
 
-        <!-- CALCULATOR VIEWS -->
         <div id="construction-calculator-view" class="view hidden"></div>
         <div id="troop-training-calculator-view" class="view hidden"></div>
         <div id="healing-calculator-view" class="view hidden"></div>
 
-        <!-- INFO VIEWS -->
         <div id="building-info-view" class="view hidden"></div>
         <div id="kingshot-map-view" class="view hidden"></div>
         <div id="research-info-view" class="view hidden"></div>
-        <div id="treasure-island-map-view" class="view hidden">
-            <div class="card p-8 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-bold mb-2 text-white">Treasure Island Event Map</h2>
-                <p class="text-sm text-yellow-400 mb-6 italic">*This map is from Whiteout Survival and should be the same but may vary slightly. Take with a grain of salt.</p>
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    <div class="lg:col-span-3">
-                        <img src="https://storage.googleapis.com/fpl-pro-6e553.appspot.com/kingshot/treasure_island_map.jpg" alt="Treasure Island Map" class="rounded-lg shadow-md w-full">
-                    </div>
-                    <div class="lg:col-span-1 space-y-6 bg-gray-800 p-4 rounded-lg">
-                        <div>
-                            <h3 class="text-xl font-bold text-blue-400 mb-2">Key</h3>
-                            <ul class="text-sm space-y-1 text-gray-300">
-                                <li><span class="font-bold text-blue-500">■</span> ?? pt</li>
-                                <li><span class="font-bold text-green-500">■</span> 500pt</li>
-                                <li><span class="font-bold text-red-500">■</span> 1500pt</li>
-                                <li><span class="font-bold text-yellow-500">■</span> 3000pt</li>
-                                <li><span class="font-bold text-orange-500">■</span> 5000pt</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="treasure-island-map-view" class="view hidden"></div>
 
 
-        <!-- PATCH NOTE VIEWS -->
+        <!-- PATCH NOTE VIEWS (Remains as stubs for later content) -->
         <div id="patch-1-1-view" class="view hidden"></div>
         <div id="patch-1-2-view" class="view hidden"></div>
         <div id="patch-1-3-view" class="view hidden"></div>
@@ -251,48 +334,86 @@
         <div id="patch-1-9-view" class="view hidden"></div>
         <div id="patch-1-10-view" class="view hidden"></div>
         <div id="patch-1-11-view" class="view hidden"></div>
-        <div id="patch-1-12-view" class="view hidden">
-             <div class="card p-8 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-bold mb-2 text-white">Patch Notes v1.12: Treasure Island Map</h2>
-                <div class="prose prose-invert text-gray-300 mt-6">
-                    <p>A new strategic map has been added for the popular Treasure Island event.</p>
-                    <h3>New Feature</h3>
-                    <ul>
-                        <li><strong>Treasure Island Map Page:</strong> You can now view a map showing the locations of treasure boxes of different point values.</li>
-                        <li>Find it under the "Information" tab in the main navigation.</li>
-                        <li class="text-yellow-400 italic">*Please note this map is from a similar game (Whiteout Survival) and locations may vary slightly.</li>
-                    </ul>
-                </div>
-                <button class="back-to-dashboard-btn mt-6 bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition">Back to Dashboard</button>
-            </div>
-        </div>
+        <div id="patch-1-12-view" class="view hidden"></div>
     </main>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, getDocs, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        window.addEventListener('DOMContentLoaded', () => {
+        // Constants and State
+        let db;
+        let auth;
+        let currentUserId = null;
+        
+        // Function to initialize Firebase and handle Auth
+        const initializeAndAuthenticate = async () => {
+            setLogLevel('Debug');
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' && __firebase_config ? __firebase_config : '{}');
+            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+            
+            if (Object.keys(firebaseConfig).length === 0) {
+                console.error("Firebase config is missing. Data persistence and Auth will not work.");
+                return;
+            }
+
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            // Authentication flow for Canvas environment
+            if (initialAuthToken) {
+                try {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } catch(e) {
+                    console.error("Custom token sign in failed. Falling back to anonymous.", e);
+                    await signInAnonymously(auth);
+                }
+            } else {
+                await signInAnonymously(auth);
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', async () => {
             const elements = {
-                // Nav elements
+                navAuthStatus: document.getElementById('nav-auth-status'),
                 navDashboard: document.getElementById('nav-dashboard'),
-                navKingshotMap: document.getElementById('nav-kingshot-map'),
-                navResearchInfo: document.getElementById('nav-research-info'),
+                navBuilder: document.getElementById('nav-builder'),
+                navRankings: document.getElementById('nav-rankings'),
+                navCalendar: document.getElementById('nav-calendar'),
+                navBattleReport: document.getElementById('nav-battle-report'),
+                navDailyChecklist: document.getElementById('nav-daily-checklist'),
+                navPackCalculator: document.getElementById('nav-pack-calculator'),
+                navConstructionCalculator: document.getElementById('nav-construction-calculator'),
+                navTroopCalculator: document.getElementById('nav-troop-calculator'),
+                navHealingCalculator: document.getElementById('nav-healing-calculator'),
+                navKingdomTransfer: document.getElementById('nav-kingdom-transfer'),
+                navKingdomReviews: document.getElementById('nav-kingdom-reviews'),
                 navTreasureMap: document.getElementById('nav-treasure-map'),
+                navKingshotMap: document.getElementById('nav-kingshot-map'),
                 navBuildingInfo: document.getElementById('nav-building-info'),
-                // ... other nav elements
+                navResearchInfo: document.getElementById('nav-research-info'),
+                navCommunityBlog: document.getElementById('nav-community-blog'),
                 navBrand: document.getElementById('nav-brand'),
-
-                // View containers
                 homeView: document.getElementById('home-view'),
+                builderView: document.getElementById('builder-view'),
+                rankingsView: document.getElementById('rankings-view'),
+                calendarView: document.getElementById('calendar-view'),
+                kingdomReviewsView: document.getElementById('kingdom-reviews-view'),
+                kingdomTransferView: document.getElementById('kingdom-transfer-view'),
+                battleReportAnalyzerView: document.getElementById('battle-report-analyzer-view'),
+                dailyChecklistView: document.getElementById('daily-checklist-view'),
+                packValueCalculatorView: document.getElementById('pack-value-calculator-view'),
+                constructionCalculatorView: document.getElementById('construction-calculator-view'),
+                troopTrainingCalculatorView: document.getElementById('troop-training-calculator-view'),
+                healingCalculatorView: document.getElementById('healing-calculator-view'),
+                buildingInfoView: document.getElementById('building-info-view'),
                 kingshotMapView: document.getElementById('kingshot-map-view'),
                 researchInfoView: document.getElementById('research-info-view'),
                 treasureIslandMapView: document.getElementById('treasure-island-map-view'),
-                buildingInfoView: document.getElementById('building-info-view'),
-                // ... other view containers
-
-                // Patch note views
+                communityBlogView: document.getElementById('community-blog-view'),
                 patch1_1_View: document.getElementById('patch-1-1-view'),
                 patch1_2_View: document.getElementById('patch-1-2-view'),
                 patch1_3_View: document.getElementById('patch-1-3-view'),
@@ -305,31 +426,13 @@
                 patch1_10_View: document.getElementById('patch-1-10-view'),
                 patch1_11_View: document.getElementById('patch-1-11-view'),
                 patch1_12_View: document.getElementById('patch-1-12-view'),
-
-
-                // Interactive elements
                 recentlyAddedCard: document.getElementById('recently-added-card'),
                 recentlyAddedList: document.getElementById('recently-added-list'),
                 expandFeaturesBtn: document.getElementById('expand-features-btn'),
-            };
-            
-            // --- Building Data ---
-            const buildingData = { /* ... unchanged ... */ };
-
-
-            const firebaseConfig = {
-                apiKey: "AIzaSyB8vos_zTcted2kqLkSB5zfn1DlBY3h_pA",
-                authDomain: "alliance-stats-2.firebaseapp.com",
-                projectId: "alliance-stats-2",
-                storageBucket: "alliance-stats-2.appspot.com",
-                messagingSenderId: "617989983517",
-                appId: "1:617989983517:web:ba23e62f9818c0b6d8e5f4",
-                measurementId: "G-TYW4Q3QDMJ"
+                gearSlots: document.querySelectorAll('.gear-slot'),
             };
 
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            const db = getFirestore(app);
+            await initializeAndAuthenticate();
 
             const allViews = Object.values(elements).filter(el => el && el.classList.contains('view'));
 
@@ -358,41 +461,39 @@
                 dropdowns.forEach(d => d.classList.remove('active'));
             });
 
-            // --- Navigation Link Logic ---
-            document.querySelectorAll('a').forEach(link => {
-                if(link.id.startsWith('nav-')) {
-                    link.addEventListener('click', () => {
-                        dropdowns.forEach(d => d.classList.remove('active'));
-                    });
-                }
+            // --- Navigation Logic ---
+            document.querySelectorAll('a[id^="nav-"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                     e.preventDefault();
+                    dropdowns.forEach(d => d.classList.remove('active'));
+                    const targetViewId = e.currentTarget.id.replace('nav-', '') + '-view';
+                    
+                    if (e.currentTarget.id === 'nav-brand' || e.currentTarget.id === 'nav-dashboard') {
+                        switchView(elements.homeView);
+                    } else {
+                        const targetView = document.getElementById(targetViewId);
+                        if(targetView) {
+                            switchView(targetView);
+                        }
+                    }
+                });
             });
 
-            // Main Navigation Logic
-            elements.navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.homeView); });
-            elements.navBrand.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.homeView); });
-            elements.navKingshotMap.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.kingshotMapView); });
-            elements.navResearchInfo.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.researchInfoView); });
-            elements.navTreasureMap.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.treasureIslandMapView); });
-            elements.navBuildingInfo.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.buildingInfoView); });
-            // ... add other nav clicks here
-
-            // Patch Note Navigation
             elements.recentlyAddedCard.addEventListener('click', (e) => {
                 if (e.target.classList.contains('patch-link')) {
                     e.preventDefault();
-                    const patch = e.target.dataset.patch;
-                    const patchViews = {
-                        '1-1': elements.patch1_1_View, '1-2': elements.patch1_2_View, '1-3': elements.patch1_3_View,
-                        '1-4': elements.patch1_4_View, '1-5': elements.patch1_5_View, '1-6': elements.patch1_6_View,
-                        '1-7': elements.patch1_7_View, '1-8': elements.patch1_8_View, '1-9': elements.patch1_9_View,
-                        '1-10': elements.patch1_10_View, '1-11': elements.patch1_11_View, '1-12': elements.patch1_12_View,
-                    };
-                    if (patchViews[patch]) switchView(patchViews[patch]);
+                    const patch = e.target.dataset.patch.replace('-', '_');
+                    const viewId = `patch-${patch}-view`.replace('.','_');
+                    const targetView = elements[viewId];
+                    if(targetView) switchView(targetView);
                 }
             });
 
             document.querySelectorAll('.back-to-dashboard-btn').forEach(button => {
-                button.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.homeView); });
+                button.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    switchView(elements.homeView); 
+                });
             });
             
             // "Recently Added" Feature Logic
@@ -416,8 +517,63 @@
                 });
             };
             
-            // Auth State Change Logic
-            onAuthStateChanged(auth, (user) => { /* ... unchanged ... */ });
+            // --- Authentication UI Update ---
+            const updateAuthUI = (user) => {
+                 elements.navAuthStatus.innerHTML = '';
+                 if (user && user.isAnonymous === false) { // Check for non-anonymous user for personalized experience
+                    currentUserId = user.uid;
+                    const displayName = user.displayName ? user.displayName.split(' ')[0] : 'User';
+                    elements.navAuthStatus.innerHTML = `
+                        <span class="text-gray-300 text-sm mr-2">Welcome, ${displayName}!</span>
+                        <button id="sign-out-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-lg text-sm">Sign Out</button>
+                    `;
+                    document.getElementById('sign-out-btn').onclick = () => signOut(auth);
+                    elements.navBuilder.classList.remove('hidden');
+                    elements.navRankings.classList.remove('hidden');
+                } else {
+                    // For anonymous or signed-out users, provide a sign-in button
+                    currentUserId = user ? user.uid : null;
+                    elements.navAuthStatus.innerHTML = `
+                        <button id="sign-in-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg flex items-center text-sm"><i class="fab fa-google mr-2"></i> Sign in</button>
+                    `;
+                    // Note: This sign-in method is for the external environment (not canvas token)
+                    document.getElementById('sign-in-btn').onclick = () => {
+                        const provider = new GoogleAuthProvider();
+                        signInWithPopup(auth, provider).catch(error => {
+                            console.error("Google Sign In Error:", error);
+                        });
+                    };
+                    // Only show the builder link if a non-anonymous user is signed in
+                    elements.navBuilder.classList.add('hidden');
+                    elements.navRankings.classList.add('hidden');
+                }
+            }
+
+            // Listen for auth state changes
+            onAuthStateChanged(auth, updateAuthUI);
+
+            // --- Gear Planner Logic Placeholder ---
+            elements.gearSlots.forEach(slot => {
+                slot.addEventListener('click', (e) => {
+                    const slotName = e.currentTarget.dataset.slot;
+                    // TODO: Implement the modal to select gear here
+                    console.log(`Clicked on gear slot: ${slotName}. Modal functionality coming next!`);
+                    
+                    // Simple temporary message box (replaces alert())
+                    const messageBox = document.createElement('div');
+                    messageBox.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+                    messageBox.innerHTML = `
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-2xl text-white">
+                            <p class="mb-4 text-xl">Gear Selection</p>
+                            <p class="mb-4">Opening selector for: <strong class="text-blue-400">${slotName.toUpperCase()}</strong></p>
+                            <p class="text-sm text-gray-400">This feature is currently under construction. We will integrate the data from your spreadsheet next!</p>
+                            <button onclick="this.parentNode.parentNode.remove()" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg float-right">Close</button>
+                        </div>
+                    `;
+                    document.body.appendChild(messageBox);
+                });
+            });
+
 
             // Initial Load
             switchView(elements.homeView);
