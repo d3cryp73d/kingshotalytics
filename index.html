@@ -78,13 +78,21 @@
             
             // --- Icon SVGs ---
             const loggedInIcon = `<svg class="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V6a3 3 0 013-3v0a3 3 0 013 3v3" /></svg>`;
-            const loggedOutIcon = `<svg class="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V6a3 3 0 013-3v0a3 3 0 013 3v3m1-3h-1" /></svg>`;
+            const loggedOutIcon = `<svg class="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-7a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V6a3 3 0 013-3v0a3 3 S0 013 3v3m1-3h-1" /></svg>`;
             
             try {
                 // --- Firebase Configuration & Initialization ---
                 const firebaseConfig = typeof __firebase_config !== 'undefined' 
                     ? JSON.parse(__firebase_config) 
-                    : { apiKey: "DEMO-KEY", authDomain: "DEMO-DOMAIN", projectId: "DEMO-PROJECT" };
+                    : {
+                        apiKey: "AIzaSyB8vos_zTcted2kqLkSB5zfn1DlBY3h_pA",
+                        authDomain: "alliance-stats-2.firebaseapp.com",
+                        projectId: "alliance-stats-2",
+                        storageBucket: "alliance-stats-2.appspot.com",
+                        messagingSenderId: "617989983517",
+                        appId: "1:617989983517:web:ba23e62f9818c0b6d8e5f4",
+                        measurementId: "G-TYW4Q3QDMJ"
+                      };
                 
                 const app = initializeApp(firebaseConfig);
                 const auth = getAuth(app);
@@ -141,5 +149,4 @@
     </script>
 </body>
 </html>
-
 
