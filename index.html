@@ -98,7 +98,7 @@
             <a href="#" id="nav-brand" class="text-2xl font-bold text-white">Kingshotalytics</a>
             <div class="hidden md:flex items-center space-x-6">
                 <a href="#" id="nav-dashboard" class="text-gray-300 hover:text-blue-400 font-medium">Dashboard</a>
-                <a href="#" id="nav-builder" class="text-gray-300 hover:text-blue-400 font-medium hidden">Gear Planner</a>
+                <a href="#" id="nav-builder" class="text-gray-300 hover:text-blue-400 font-medium">Gear Planner</a>
                 <a href="#" id="nav-rankings" class="text-gray-300 hover:text-blue-400 font-medium hidden">Player Rankings</a>
 
                 <div class="relative dropdown">
@@ -145,8 +145,14 @@
                     <input type="search" id="search-input" class="bg-gray-700 text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 w-32 md:w-48 transition-all" placeholder="Search...">
                     <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
-                <div id="nav-auth-status"></div>
-            </div>
+                <div id="auth-status-container">
+                    <button id="google-signin-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Sign In</button>
+                    <div id="user-info" class="hidden items-center">
+                        <span id="user-name" class="text-white mr-4"></span>
+                        <button id="sign-out-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">Sign Out</button>
+                    </div>
+                </div>
+                </div>
         </nav>
     </header>
 
@@ -195,7 +201,6 @@
             </div>
         </div>
 
-        <!-- GEAR PLANNER VIEW -->
         <div id="builder-view" class="view hidden">
             <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
                 <h1 class="text-3xl font-bold text-white">Gear Planner</h1>
@@ -206,8 +211,7 @@
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2 grid grid-cols-2 md:grid-cols-3 gap-6" id="gear-slots-container">
-                    <!-- Gear slots will be dynamically generated here -->
-                </div>
+                    </div>
                 <div class="card p-6 rounded-xl shadow-lg h-fit">
                     <h2 class="text-2xl font-bold mb-4 text-white border-b border-gray-600 pb-2">Total Stats</h2>
                     <div id="total-stats-container" class="space-y-2 text-lg"></div>
@@ -215,7 +219,6 @@
             </div>
         </div>
 
-        <!-- All other views remain hidden as before -->
         <div id="rankings-view" class="view hidden"></div>
         <div id="calendar-view" class="view hidden"></div>
         <div id="kingdom-reviews-view" class="view hidden"></div>
@@ -233,7 +236,6 @@
         <div id="treasure-island-map-view" class="view hidden"></div>
     </main>
 
-    <!-- Gear Selection Modal -->
     <div id="gear-modal" class="modal">
         <div class="modal-content text-white">
             <h2 class="text-2xl font-bold mb-4" id="modal-title">Select Gear</h2>
@@ -249,8 +251,7 @@
                 <div>
                     <label for="modal-gear-piece" class="block mb-2 text-sm font-medium">Gear Piece</label>
                     <select id="modal-gear-piece" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        <!-- Options will be populated by JS -->
-                    </select>
+                        </select>
                 </div>
                 <div>
                     <label for="modal-rarity" class="block mb-2 text-sm font-medium">Rarity</label>
@@ -275,11 +276,21 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, collection, getDocs, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // --- DATA STRUCTURES (from spreadsheet) ---
+        // --- FIREBASE CONFIG (REPLACE WITH YOURS) ---
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // --- DATA STRUCTURES ---
         const GEAR_DATA = {
             infantry: {
                 helm: { name: "Infantry Helm", stats: { power: [1,2,3,4,5], attack: [1,2,3,4,5], defense: [1,2,3,4,5], health: [1,2,3,4,5], lethality: [0,0,0,0,0], infHealth: [1,2,3,4,5] } },
@@ -300,8 +311,6 @@
                 leatherwear: { name: "Marksman Leatherwear", stats: { power: [1,2,3,4,5], attack: [1,2,3,4,5], defense: [1,2,3,4,5], health: [1,2,3,4,5], lethality: [0,0,0,0,0], markHealth: [1,2,3,4,5] } },
             }
         };
-        // NOTE: The stats above are placeholders. I will replace them with real data in the next step.
-
         const GEAR_SLOTS = [
             { id: 'helm', name: 'Helm', icon: 'fa-hard-hat', troop: 'infantry' },
             { id: 'greaves', name: 'Greaves', icon: 'fa-shoe-prints', troop: 'infantry' },
@@ -321,14 +330,14 @@
         let currentLoadout = {}; // State for equipped gear
         let currentSlot = null; // Which slot is being edited
 
-        // --- Firebase Initialization ---
-        const initializeAndAuthenticate = async () => {
-            // Standard Firebase init code...
-        };
-
         window.addEventListener('DOMContentLoaded', async () => {
+            // --- App Initialization ---
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            // --- Element References ---
             const elements = {
-                // All element selectors from before...
                 gearSlotsContainer: document.getElementById('gear-slots-container'),
                 totalStatsContainer: document.getElementById('total-stats-container'),
                 gearModal: document.getElementById('gear-modal'),
@@ -340,7 +349,51 @@
                 modalLevelValue: document.getElementById('modal-level-value'),
                 modalCancelBtn: document.getElementById('modal-cancel-btn'),
                 modalConfirmBtn: document.getElementById('modal-confirm-btn'),
+                googleSignInBtn: document.getElementById('google-signin-btn'),
+                signOutBtn: document.getElementById('sign-out-btn'),
+                userInfo: document.getElementById('user-info'),
+                userName: document.getElementById('user-name')
             };
+
+            // --- AUTHENTICATION LOGIC - START ---
+            const updateAuthUI = (user) => {
+                if (user) {
+                    currentUserId = user.uid;
+                    elements.googleSignInBtn.classList.add('hidden');
+                    elements.userInfo.classList.remove('hidden');
+                    elements.userName.textContent = user.displayName || 'Anonymous';
+                    // Show gear planner and other user-specific nav items
+                    document.getElementById('nav-builder').classList.remove('hidden');
+                } else {
+                    currentUserId = null;
+                    elements.googleSignInBtn.classList.remove('hidden');
+                    elements.userInfo.classList.add('hidden');
+                    elements.userName.textContent = '';
+                     // Hide gear planner and other user-specific nav items
+                    document.getElementById('nav-builder').classList.add('hidden');
+                }
+            };
+
+            onAuthStateChanged(auth, updateAuthUI);
+
+            elements.googleSignInBtn.addEventListener('click', async () => {
+                const provider = new GoogleAuthProvider();
+                try {
+                    await signInWithPopup(auth, provider);
+                } catch (error) {
+                    console.error("Error signing in with Google:", error);
+                }
+            });
+
+            elements.signOutBtn.addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                } catch (error) {
+                    console.error("Error signing out:", error);
+                }
+            });
+            // --- AUTHENTICATION LOGIC - END ---
+
 
             // --- UI Generation ---
             const createGearSlots = () => {
@@ -362,7 +415,6 @@
             const updateTotalStatsUI = () => {
                  const totals = {power:0, attack:0, defense:0, health:0, lethality:0, infHealth:0, lancHealth:0, markHealth:0};
                  // In a real implementation, this would calculate from currentLoadout and GEAR_DATA
-                 // For now, it's just a display template.
                  elements.totalStatsContainer.innerHTML = `
                     <div class="flex justify-between"><span>Power:</span> <span>${totals.power}</span></div>
                     <div class="flex justify-between"><span>Attack:</span> <span>${totals.attack.toFixed(2)}%</span></div>
@@ -391,19 +443,6 @@
             };
 
             const populateGearPieces = (troop) => {
-                elements.modalGearPiece.innerHTML = '';
-                const gearForTroop = GEAR_DATA[troop];
-                // Only populate pieces that match the slot type
-                 Object.keys(gearForTroop).forEach(gearKey => {
-                    if (GEAR_SLOTS.find(s => s.id === currentSlot && s.troop === troop)) {
-                        const gear = gearForTroop[gearKey];
-                        const option = document.createElement('option');
-                        option.value = gearKey;
-                        option.textContent = gear.name;
-                        elements.modalGearPiece.appendChild(option);
-                    }
-                 });
-                 // Filter to only show items for the current slot
                  elements.modalGearPiece.innerHTML = '';
                  const potentialItems = GEAR_DATA[troop];
                  if(potentialItems && potentialItems[currentSlot]){
@@ -428,7 +467,7 @@
                 };
                 currentLoadout[currentSlot] = selectedGear;
                 updateSlotUI(currentSlot);
-                updateTotalStatsUI(); // This will recalculate everything
+                updateTotalStatsUI();
                 closeGearModal();
             });
 
@@ -446,16 +485,12 @@
                 }
             };
             
-            // --- Initial Setup & Auth ---
-            // The rest of the setup code (switchView, authUI, etc.) remains here...
-            // It has been omitted for brevity but is still in the file.
-            
+            // --- Initial Setup ---
             createGearSlots();
             updateTotalStatsUI();
-            // switchView(elements.homeView);
-            // ... the rest of the initialization
+            // This is a placeholder for view switching logic
+            // switchView('home-view'); 
         });
     </script>
 </body>
 </html>
-
