@@ -98,6 +98,10 @@
                 <div class="relative dropdown">
                     <button class="text-gray-300 hover:text-blue-400 font-medium focus:outline-none">Information <i class="fas fa-chevron-down text-xs"></i></button>
                     <div class="dropdown-menu absolute left-0 mt-2 w-56 rounded-md shadow-lg py-1 z-30">
+                         <a href="#" id="nav-treasure-map" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Treasure Island Map*</a>
+                         <a href="#" id="nav-kingshot-map" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Kingshot Map</a>
+                         <a href="#" id="nav-building-info" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Building Information</a>
+                         <a href="#" id="nav-research-info" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Research Information</a>
                          <a href="#" id="nav-community-blog" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-600">Community Blog</a>
                     </div>
                 </div>
@@ -127,6 +131,22 @@
                     <div id="recently-added-card" class="card p-8 rounded-xl shadow-lg">
                         <h2 class="text-3xl font-bold mb-6 text-white">Recently Added</h2>
                         <ul id="recently-added-list" class="list-disc list-inside space-y-3">
+                            <li>
+                                <span class="text-gray-300">New Info Section: Treasure Island event map.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-12">[Details v1.12]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">New Info Section: Research tree costs and bonuses.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-11">[Details v1.11]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">New Info Section: Standard Kingdom Map with buffs.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-10">[Details v1.10]</a>
+                            </li>
+                            <li>
+                                <span class="text-gray-300">New Info Section: View full building upgrade charts.</span>
+                                <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-9">[Details v1.9]</a>
+                            </li>
                             <li>
                                 <span class="text-gray-300">Construction Calculator can now autofill buffs from the Gear Planner.</span>
                                 <a href="#" class="patch-link text-blue-400 hover:underline ml-2" data-patch="1-8">[Details v1.8]</a>
@@ -186,40 +206,37 @@
         <div id="community-blog-view" class="view hidden"></div>
 
         <!-- CALCULATOR VIEWS -->
-        <div id="construction-calculator-view" class="view hidden">
-            <div class="card p-8 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-bold mb-6 text-white">Construction Calculator</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Building Type</label>
-                        <select id="building-type" class="w-full p-2 bg-gray-700 rounded-md"><option value="townCenter">Town Center</option></select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Total Construction Speed Buff (%)</label>
-                        <input type="number" id="construction-buff" class="w-full p-2 bg-gray-700 rounded-md" placeholder="e.g., 250.5">
-                         <p class="text-xs text-gray-500 mt-1">Find this in: Profile > Magnifying Glass > Growth</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Current Level</label>
-                        <input type="number" id="building-current-lvl" class="w-full p-2 bg-gray-700 rounded-md" value="24">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Target Level</label>
-                        <input type="number" id="building-target-lvl" class="w-full p-2 bg-gray-700 rounded-md" value="25">
-                    </div>
-                     <div class="md:col-span-2">
-                        <label class="flex items-center space-x-2 text-sm text-gray-400 cursor-pointer">
-                            <input type="checkbox" id="autofill-buff-checkbox" class="h-4 w-4 rounded bg-gray-800 border-gray-600 text-blue-500 focus:ring-blue-500">
-                            <span>Autofill from Gear Planner (Logged in users)</span>
-                        </label>
-                    </div>
-                </div>
-                <button id="calculate-construction-btn" class="mt-6 bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition">Calculate Upgrade Cost</button>
-                <div id="construction-results" class="mt-6"></div>
-            </div>
-        </div>
+        <div id="construction-calculator-view" class="view hidden"></div>
         <div id="troop-training-calculator-view" class="view hidden"></div>
         <div id="healing-calculator-view" class="view hidden"></div>
+
+        <!-- INFO VIEWS -->
+        <div id="building-info-view" class="view hidden"></div>
+        <div id="kingshot-map-view" class="view hidden"></div>
+        <div id="research-info-view" class="view hidden"></div>
+        <div id="treasure-island-map-view" class="view hidden">
+            <div class="card p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-2 text-white">Treasure Island Event Map</h2>
+                <p class="text-sm text-yellow-400 mb-6 italic">*This map is from Whiteout Survival and should be the same but may vary slightly. Take with a grain of salt.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div class="lg:col-span-3">
+                        <img src="https://storage.googleapis.com/fpl-pro-6e553.appspot.com/kingshot/treasure_island_map.jpg" alt="Treasure Island Map" class="rounded-lg shadow-md w-full">
+                    </div>
+                    <div class="lg:col-span-1 space-y-6 bg-gray-800 p-4 rounded-lg">
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-400 mb-2">Key</h3>
+                            <ul class="text-sm space-y-1 text-gray-300">
+                                <li><span class="font-bold text-blue-500">■</span> ?? pt</li>
+                                <li><span class="font-bold text-green-500">■</span> 500pt</li>
+                                <li><span class="font-bold text-red-500">■</span> 1500pt</li>
+                                <li><span class="font-bold text-yellow-500">■</span> 3000pt</li>
+                                <li><span class="font-bold text-orange-500">■</span> 5000pt</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <!-- PATCH NOTE VIEWS -->
@@ -230,17 +247,21 @@
         <div id="patch-1-5-view" class="view hidden"></div>
         <div id="patch-1-6-view" class="view hidden"></div>
         <div id="patch-1-7-view" class="view hidden"></div>
-        <div id="patch-1-8-view" class="view hidden">
-            <div class="card p-8 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-bold mb-2 text-white">Patch Notes v1.8: Gear Planner Integration</h2>
+        <div id="patch-1-8-view" class="view hidden"></div>
+        <div id="patch-1-9-view" class="view hidden"></div>
+        <div id="patch-1-10-view" class="view hidden"></div>
+        <div id="patch-1-11-view" class="view hidden"></div>
+        <div id="patch-1-12-view" class="view hidden">
+             <div class="card p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-2 text-white">Patch Notes v1.12: Treasure Island Map</h2>
                 <div class="prose prose-invert text-gray-300 mt-6">
-                    <p>This update connects the Gear Planner to the Construction Calculator for a more streamlined experience.</p>
+                    <p>A new strategic map has been added for the popular Treasure Island event.</p>
                     <h3>New Feature</h3>
                     <ul>
-                        <li><strong>Autofill Buffs:</strong> In the Construction Calculator, logged-in users can now check a box to automatically fill the "Total Construction Speed Buff" field with the value from their saved gear sets.</li>
-                        <li>This removes the need to manually look up your stats every time you use the calculator.</li>
+                        <li><strong>Treasure Island Map Page:</strong> You can now view a map showing the locations of treasure boxes of different point values.</li>
+                        <li>Find it under the "Information" tab in the main navigation.</li>
+                        <li class="text-yellow-400 italic">*Please note this map is from a similar game (Whiteout Survival) and locations may vary slightly.</li>
                     </ul>
-                     <p class="text-sm text-yellow-400 mt-4"><strong>Note:</strong> This feature requires you to have a saved build in the Gear Planner. The calculation is based on placeholder stats until the gear item database is complete.</p>
                 </div>
                 <button class="back-to-dashboard-btn mt-6 bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition">Back to Dashboard</button>
             </div>
@@ -256,13 +277,19 @@
             const elements = {
                 // Nav elements
                 navDashboard: document.getElementById('nav-dashboard'),
-                navConstructionCalculator: document.getElementById('nav-construction-calculator'),
+                navKingshotMap: document.getElementById('nav-kingshot-map'),
+                navResearchInfo: document.getElementById('nav-research-info'),
+                navTreasureMap: document.getElementById('nav-treasure-map'),
+                navBuildingInfo: document.getElementById('nav-building-info'),
                 // ... other nav elements
                 navBrand: document.getElementById('nav-brand'),
 
                 // View containers
                 homeView: document.getElementById('home-view'),
-                constructionCalculatorView: document.getElementById('construction-calculator-view'),
+                kingshotMapView: document.getElementById('kingshot-map-view'),
+                researchInfoView: document.getElementById('research-info-view'),
+                treasureIslandMapView: document.getElementById('treasure-island-map-view'),
+                buildingInfoView: document.getElementById('building-info-view'),
                 // ... other view containers
 
                 // Patch note views
@@ -274,21 +301,19 @@
                 patch1_6_View: document.getElementById('patch-1-6-view'),
                 patch1_7_View: document.getElementById('patch-1-7-view'),
                 patch1_8_View: document.getElementById('patch-1-8-view'),
+                patch1_9_View: document.getElementById('patch-1-9-view'),
+                patch1_10_View: document.getElementById('patch-1-10-view'),
+                patch1_11_View: document.getElementById('patch-1-11-view'),
+                patch1_12_View: document.getElementById('patch-1-12-view'),
 
 
                 // Interactive elements
                 recentlyAddedCard: document.getElementById('recently-added-card'),
                 recentlyAddedList: document.getElementById('recently-added-list'),
                 expandFeaturesBtn: document.getElementById('expand-features-btn'),
-                
-                // Calculator Elements
-                calculateConstructionBtn: document.getElementById('calculate-construction-btn'),
-                constructionResults: document.getElementById('construction-results'),
-                autofillBuffCheckbox: document.getElementById('autofill-buff-checkbox'),
-                constructionBuffInput: document.getElementById('construction-buff'),
             };
             
-            // --- Building Data (Sample for Town Center) ---
+            // --- Building Data ---
             const buildingData = { /* ... unchanged ... */ };
 
 
@@ -317,40 +342,38 @@
             const dropdowns = document.querySelectorAll('.dropdown');
             dropdowns.forEach(dropdown => {
                 const button = dropdown.querySelector('button');
-                const menu = dropdown.querySelector('.dropdown-menu');
-
                 if (button) {
                     button.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        // Close other dropdowns
-                        dropdowns.forEach(d => {
-                            if (d !== dropdown) d.classList.remove('active');
-                        });
-                        // Toggle the current one
-                        dropdown.classList.toggle('active');
-                    });
-                }
-
-                // Stop clicks inside the menu from closing it
-                if (menu) {
-                    menu.addEventListener('click', (e) => {
-                        e.stopPropagation();
+                        const isActive = dropdown.classList.contains('active');
+                        dropdowns.forEach(d => d.classList.remove('active'));
+                        if (!isActive) {
+                            dropdown.classList.add('active');
+                        }
                     });
                 }
             });
 
-            // Close dropdowns if clicking anywhere else
             window.addEventListener('click', () => {
-                dropdowns.forEach(dropdown => {
-                    dropdown.classList.remove('active');
-                });
+                dropdowns.forEach(d => d.classList.remove('active'));
             });
 
+            // --- Navigation Link Logic ---
+            document.querySelectorAll('a').forEach(link => {
+                if(link.id.startsWith('nav-')) {
+                    link.addEventListener('click', () => {
+                        dropdowns.forEach(d => d.classList.remove('active'));
+                    });
+                }
+            });
 
             // Main Navigation Logic
             elements.navDashboard.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.homeView); });
             elements.navBrand.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.homeView); });
-            elements.navConstructionCalculator.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.constructionCalculatorView); });
+            elements.navKingshotMap.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.kingshotMapView); });
+            elements.navResearchInfo.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.researchInfoView); });
+            elements.navTreasureMap.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.treasureIslandMapView); });
+            elements.navBuildingInfo.addEventListener('click', (e) => { e.preventDefault(); switchView(elements.buildingInfoView); });
             // ... add other nav clicks here
 
             // Patch Note Navigation
@@ -361,7 +384,8 @@
                     const patchViews = {
                         '1-1': elements.patch1_1_View, '1-2': elements.patch1_2_View, '1-3': elements.patch1_3_View,
                         '1-4': elements.patch1_4_View, '1-5': elements.patch1_5_View, '1-6': elements.patch1_6_View,
-                        '1-7': elements.patch1_7_View, '1-8': elements.patch1_8_View
+                        '1-7': elements.patch1_7_View, '1-8': elements.patch1_8_View, '1-9': elements.patch1_9_View,
+                        '1-10': elements.patch1_10_View, '1-11': elements.patch1_11_View, '1-12': elements.patch1_12_View,
                     };
                     if (patchViews[patch]) switchView(patchViews[patch]);
                 }
@@ -372,39 +396,28 @@
             });
             
             // "Recently Added" Feature Logic
-            const manageRecentFeatures = () => { /* ... unchanged ... */ };
+            const manageRecentFeatures = () => {
+                 const listItems = elements.recentlyAddedList.children;
+                const maxItems = 5;
 
-            // --- Construction Calculator Logic ---
-            elements.calculateConstructionBtn.addEventListener('click', () => { /* ... unchanged ... */ });
-            
-            elements.autofillBuffCheckbox.addEventListener('change', (e) => {
-                const isChecked = e.target.checked;
-                if(isChecked && auth.currentUser) {
-                    // Placeholder until gear planner has actual items and stats
-                    // In a real scenario, you'd fetch the user's equipped build and sum the construction stats
-                    const placeholderBuff = 25.5; 
-                    elements.constructionBuffInput.value = placeholderBuff;
-                    elements.constructionBuffInput.disabled = true;
-                } else {
-                    elements.constructionBuffInput.disabled = false;
-                    if(!auth.currentUser) {
-                        e.target.checked = false; // Uncheck if user is not logged in
+                if (listItems.length > maxItems) {
+                    elements.expandFeaturesBtn.classList.remove('hidden');
+                    for (let i = maxItems; i < listItems.length; i++) {
+                        listItems[i].classList.add('hidden');
                     }
                 }
-            });
 
+                elements.expandFeaturesBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    for (let i = 0; i < listItems.length; i++) {
+                        listItems[i].classList.remove('hidden');
+                    }
+                    elements.expandFeaturesBtn.classList.add('hidden');
+                });
+            };
+            
             // Auth State Change Logic
-            onAuthStateChanged(auth, (user) => {
-                // Disable checkbox if logged out
-                if (!user) {
-                    elements.autofillBuffCheckbox.disabled = true;
-                    elements.autofillBuffCheckbox.parentElement.title = "Sign in to use this feature.";
-                } else {
-                    elements.autofillBuffCheckbox.disabled = false;
-                    elements.autofillBuffCheckbox.parentElement.title = "";
-                }
-                // Placeholder for full auth UI update
-            });
+            onAuthStateChanged(auth, (user) => { /* ... unchanged ... */ });
 
             // Initial Load
             switchView(elements.homeView);
